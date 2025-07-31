@@ -93,7 +93,6 @@ type UserRunner struct {
 type UserRunnerObservation struct {
   ID            *int 			`json:"id,omitempty"`
   Status			  string 		`json:"status,omitempty"`
-  LastContact   string 		`json:"lastContact,omitempty"`
   Version       string 		`json:"version,omitempty"`
 }
 
