@@ -43,7 +43,7 @@ type UserRunnerParameters struct {
 
 	// Locked indicates whether the user runner is locked.
 	// +required
-  Locked bool `json:"locked"`
+    Locked bool `json:"locked"`
 
 	// MaintenanceNote is a note that will be displayed on the user runner page when the runner is in maintenance mode. Free-form, 1024 character limit.
 	// +optional
@@ -54,11 +54,11 @@ type UserRunnerParameters struct {
 	// +kubebuilder:validation:Minimum=600
 	MaximumTimeout *int `json:"maximumTimeout,omitempty"`
 
-  // Paused indicates whether the user runner should ignore new jobs.
-  // +optional
+	// Paused indicates whether the user runner should ignore new jobs.
+	// +optional
 	Paused bool `json:"paused,omitempty"`
 
-  // ProjectID is the ID of the project that the user runner belongs to.
+ 	// ProjectID is the ID of the project that the user runner belongs to.
 	// +optional
 	ProjectID *int `json:"projectId,omitempty"`
 
@@ -81,19 +81,35 @@ type UserRunnerParameters struct {
 
 	// TagList are a list of tagList to be applied to the user runner.
 	// +optional
-	TagList []string `json:tagList,omitempty`"`
+	TagList []string `json:tagList,omitempty"`
 }
 
 // Shared fields for User Runner
 type UserRunner struct {
-  
+  metav1.TypeMeta   `json:",inline"`
+  metav1.ObjectMeta `json:"metadata,omitempty"`
+
+  // Spec defines the desired state of a User Runner.
+  Spec   UserRunnerSpec   `json:"spec,omitempty"`
+  // Status represents the observed state of a User Runner.
+  Status UserRunnerStatus `json:"status,omitempty"`
+}
+
+type RunnerID struct {
+
+}
+
+// Gitlab API doc: https://docs.gitlab.com/api/runners/#get-runners-details
+type ListUserRunnerDetails struct {
+	Type 		*string 	`json:"type,omitempty"` 
+	Status		*string 	`json:"status,omitempty"` 
+	TagList 	*[]string 	`json:"tagList,omitempty"` 
 }
 
 // UserRunnerObservation is the observed state of a User Runner.
 type UserRunnerObservation struct {
-  ID            *int 			`json:"id,omitempty"`
-  Status			  string 		`json:"status,omitempty"`
-  Version       string 		`json:"version,omitempty"`
+    ID          *int      				`json:"id,omitempty"`          // ID of the user runner
+	ListRunners ListUserRunnerDetails 	`json:"listRuners,omitempty"` // List of user runners
 }
 
 // GroupsRunnerSpec defines the desired state of a User Runner.

@@ -45,6 +45,21 @@ const (
 // Client defined User Runer operations
 type Client interface {
 	CreateUserRunner(opts *CreateUserRunnerOptions, options ...RequestOptionFunc) (*UserRunner, *Response, error)
+  ListRunners(opt *ListRunnersOptions, options ...RequestOptionFunc) ([]*Runner, *Response, error)
+  ListAllRunners(opt *ListRunnersOptions, options ...RequestOptionFunc) ([]*Runner, *Response, error)
+  GetRunnerDetails(rid any, options ...RequestOptionFunc) (*RunnerDetails, *Response, error)
+  UpdateRunnerDetails(rid any, opt *UpdateRunnerDetailsOptions, options ...RequestOptionFunc) (*RunnerDetails, *Response, error)
+  RemoveRunner(rid any, options ...RequestOptionFunc) (*Response, error)
+  ListRunnerJobs(rid any, opt *ListRunnerJobsOptions, options ...RequestOptionFunc) ([]*Job, *Response, error)
+  ListProjectRunners(pid any, opt *ListProjectRunnersOptions, options ...RequestOptionFunc) ([]*Runner, *Response, error)
+  EnableProjectRunner(pid any, opt *EnableProjectRunnerOptions, options ...RequestOptionFunc) (*Runner, *Response, error)
+  DisableProjectRunner(pid any, runner int, options ...RequestOptionFunc) (*Response, error)
+  ListGroupsRunners(gid any, opt *ListGroupsRunnersOptions, options ...RequestOptionFunc) ([]*Runner, *Response, error)
+  RegisterNewRunner(opt *RegisterNewRunnerOptions, options ...RequestOptionFunc) (*Runner, *Response, error)
+  DeleteRegisteredRunner(opt *DeleteRegisteredRunnerOptions, options ...RequestOptionFunc) (*Response, error)
+  DeleteRegisteredRunnerByID(rid int, options ...RequestOptionFunc) (*Response, error)
+  VerifyRegisteredRunner(opt *VerifyRegisteredRunnerOptions, options ...RequestOptionFunc) (*Response, error)
+  ResetRunnerAuthenticationToken(rid int, options ...RequestOptionFunc) (*RunnerAuthenticationToken, *Response, error)
 }
 
 // NewUserRunnerClient returns a new UserRunner service
@@ -60,23 +75,17 @@ func IsErrorUserRunnerNotFound(err error) bool {
   return strings.Contains(err.Error(), errGroupNotFound)
 }
 
+
 //TODO: get this one right, compare to group
-func GenerateUserRunnerObservation(ur *UserRunner) v1alpha1.UserRunnerObservation {
+func GenerateUserRunnerObservation(ur *gitlab.UserRunner) v1alpha1.UserRunnerObservation {
   if ur == nil {
     return v1alpha1.UserRunnerObservation{}
   }
 
   return v1alpha1.UserRunnerObservation{
     ID:                ur.ID,
-    Description:       ur.Description,
-    AccessLevel:       ur.AccessLevel,
-    GroupID:           ur.GroupID,
-    CreatedAt:         metav1.NewTime(ur.CreatedAt),
-    LastUsedAt:        metav1.NewTime(ur.LastUsedAt),
-    MaintenanceNote:   ur.MaintenanceNote,
-    MaximumTimeout:    ur.MaximumTimeout,
-    PendingDelete:     ur.PendingDelete,
-    Paused:            ur.Paused,
-    Locked:            ur.Locked,
+    Type:              ur.Type,
+    Status:            ur.Status,
+    TagList:           ur.TagList,
   }
 }
