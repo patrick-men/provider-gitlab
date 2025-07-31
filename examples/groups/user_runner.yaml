@@ -1,0 +1,26 @@
+apiVersion: groups.gitlab.crossplane.io/v1alpha1
+kind: GroupRunner
+metadata:
+  name: example-group-runner
+spec:
+  forProvider:
+    # If not set, metadata.name will be used instead.
+    name: "Example Group Runner"
+    accessLevel: "ref_protected"
+    description: "example group runner description"
+    runnerType: "group"
+    groupId: 123
+    locked: false
+    maintenanceNote: "example group runner maintenance note"
+    maximumTimeout: "600"
+    paused: false
+    runUntagged: false
+    tagList:
+      - "example tag 1"
+      - "example tag 2"
+  providerConfigRef:
+    name: gitlab-provider
+  # a reference to a Kubernetes secret to which the controller will write the runnersToken
+  writeConnectionSecretToRef:
+    name: gitlab-group-runner-example-token
+    namespace: crossplane-system
