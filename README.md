@@ -1,3 +1,7 @@
+THIS ISN'T BEING WORKED ON ANYMORE. HAS BEEN HANDED OVER TO YEHLO, SEE https://github.com/crossplane-contrib/provider-gitlab/pull/219
+
+---
+
 # provider-gitlab
 
 ## Overview
